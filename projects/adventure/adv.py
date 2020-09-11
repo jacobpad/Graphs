@@ -14,7 +14,7 @@ world = World()
 # map_file = "projects/adventure/maps/test_cross.txt"
 # map_file = "projects/adventure/maps/test_loop.txt"
 # map_file = "projects/adventure/maps/test_loop_fork.txt"
-map_file = 'projects/adventure/maps/main_maze.txt'
+map_file = "projects/adventure/maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph = literal_eval(open(map_file, "r").read())
@@ -33,13 +33,13 @@ player.current_room = world.starting_room
 
 def add_room_to_map(room):
     if room not in room_map:  # If we don't already have it,
-        room_map[room] = {'n': '?', 's': '?', 'e': '?', 'w': '?'}  # Add it
+        room_map[room] = {"n": "?", "s": "?", "e": "?", "w": "?"}  # Add it
         exits = room.get_exits()  # Find the exits variable
 
         for direction in room_map[room]:  # Look all 4 directions
             if direction not in exits:  # Find the exits: action code
                 # If there's no exit, mark it
-                room_map[room][direction] = 'NONE'
+                room_map[room][direction] = "NONE"
         return True  # Actually run the code
     else:  # If the room is in the map already, we've visited it
         return False  # We've been here already, no need to mark it up again
@@ -64,9 +64,9 @@ def path_to_nearest_room_with_unexplored_exits(starting_room):
             visited.add(room)  # Add it if we haven't visited
 
         for each_exit in room_map[room]:  # Keep looking for exits
-            if room_map[room][each_exit] == '?':
+            if room_map[room][each_exit] == "?":
                 return path
-            elif room_map[room][each_exit] != 'NONE':
+            elif room_map[room][each_exit] != "NONE":
                 new_path = path.copy()
                 new_path.append(each_exit)
                 new_room = room_map[room][each_exit]
@@ -79,9 +79,9 @@ def path_to_nearest_room_with_unexplored_exits(starting_room):
 # traversal_path = ['n', 'n']
 traversal_path = []
 
-default_direction = 's'
-change_directions = {'n': 'e', 'e': 's', 's': 'w', 'w': 'n'}
-inverse = {'n': 's', 's': 'n', 'e': 'w', 'w': 'e'}
+default_direction = "s"
+change_directions = {"n": "e", "e": "s", "s": "w", "w": "n"}
+inverse = {"n": "s", "s": "n", "e": "w", "w": "e"}
 room_map = {}
 
 
@@ -95,7 +95,9 @@ while len(room_map) < len(room_graph):  # If we're not done exploring
     direction = default_direction  # Which way to go
 
     for _ in range(len(change_directions)):
-        if room_map[room][direction] == '?' and direction in exits:  # Shall I go somewhere new?
+        if (
+            room_map[room][direction] == "?" and direction in exits
+        ):  # Shall I go somewhere new?
             found_unfound_exits = True
 
             player.travel(direction)  # Move
@@ -137,7 +139,8 @@ for move in traversal_path:
 
 if len(visited_rooms) == len(room_graph):
     print(
-        f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
+        f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited"
+    )
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
@@ -146,12 +149,12 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# player.current_room.print_room_description(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
+#     else:
+#         print("I did not understand that command.")
